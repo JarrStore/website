@@ -6,183 +6,156 @@ DB_USERNAME="u5_FBmTrzUtQS"
 DB_PASSWORD="ux+exilNb^sfk066PX!6kNkS"
 DB_NAME="s5_admin"
 
-# Meminta input domain dari user
+# Mengambil domain
 echo "Masukkan domain website (contoh: example.com):"
-read domain
+read DOMAIN
 
-# Membuat folder untuk website
-mkdir -p /var/www/html/samp_website
+# Menyiapkan Direktori Web
+WEB_DIR="/var/www/html/samp_website"
+sudo mkdir -p $WEB_DIR
 
-# Membuat file HTML untuk halaman website
-cat <<EOF > /var/www/html/samp_website/index.html
+# Menyalin file website ke direktori
+echo "Menyalin file website..."
+cat <<EOF > $WEB_DIR/index.html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Website Reseller Samp By Fajar Official</title>
+    <title>Website Reseller Samp</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
             font-family: Arial, sans-serif;
-            background-image: url('https://link-gambar-anda.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            color: white;
-        }
-        .marquee-text {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 24px;
-            font-weight: bold;
-            white-space: nowrap;
-            animation: marquee 10s linear infinite;
-        }
-        @keyframes marquee {
-            0% {
-                transform: translateX(100%);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
-        .container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             text-align: center;
+            padding-top: 50px;
+            background-image: url('https://link-to-your-background-image.com');
+            background-size: cover;
         }
-        .login-form {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .login-form input {
-            margin: 10px 0;
+        .token-input {
+            margin: 20px;
             padding: 10px;
-            font-size: 16px;
-            width: 250px;
-        }
-        .login-form button {
-            padding: 10px;
-            font-size: 16px;
-            background-color: green;
-            color: white;
-            width: 100%;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .menu {
-            display: none;
-            background-color: rgba(0, 0, 0, 0.6);
-            position: absolute;
-            top: 50%;
-            left: 20px;
-            transform: translateY(-50%);
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .menu a {
-            color: white;
-            text-decoration: none;
-            margin: 10px 0;
             font-size: 18px;
         }
-        .menu a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 5px;
-            border-radius: 5px;
-        }
-        .menu-btn {
-            font-size: 30px;
+        .btn-login {
+            padding: 10px 20px;
+            background-color: #28a745;
             color: white;
+            border: none;
             cursor: pointer;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 5px;
-            position: absolute;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
+        }
+        .admin-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .running-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            animation: scrollingText 10s linear infinite;
+        }
+        @keyframes scrollingText {
+            0% { left: 100%; }
+            100% { left: -100%; }
         }
     </style>
 </head>
 <body>
-
-    <!-- Running Text -->
-    <div class="marquee-text">Welcome Website Reseller Samp By Fajar Official</div>
-
-    <!-- Container -->
-    <div class="container">
-        <h2>HALO SELAMAT DATANG</h2>
-        <p>Masukkan token di bawah ini:</p>
-
-        <div class="login-form">
-            <input type="text" id="token" placeholder="Masukkan Token" />
-            <button onclick="verifyToken()">Login</button>
-        </div>
-    </div>
-
-    <!-- Menu Admin -->
-    <div class="menu" id="menu">
-        <a href="https://wa.me/+6283157602477" target="_blank">Contact Me (WhatsApp)</a>
-        <a href="mailto:fajarstore709@gmail.com" target="_blank">Contact Me (Email)</a>
-        <a href="#" onclick="showAdminPanel()">Admin Panel</a>
-    </div>
-
-    <!-- Menu Button -->
-    <div class="menu-btn" onclick="toggleMenu()">&#x2630;</div>
+    <div class="running-text">Welcome Website Reseller Samp By Fajar Official</div>
+    <h2>HALO SELAMAT DATANG MASUKKAN TOKEN DI BAWAH INI</h2>
+    <input type="text" class="token-input" id="token" placeholder="Masukkan Token" />
+    <button class="btn-login" onclick="checkToken()">Login</button>
+    <br><br>
+    <button class="admin-button" onclick="location.href='admin.html'">Halaman Admin</button>
 
     <script>
-        const correctToken = "resellersampfajar";
-        
-        // Fungsi untuk memverifikasi token
-        function verifyToken() {
-            const token = document.getElementById("token").value;
-            if (token === correctToken) {
-                document.getElementById("token").style.display = "none";
-                document.querySelector("button").style.display = "none";
-                document.getElementById("menu").style.display = "block";
+        function checkToken() {
+            const token = document.getElementById('token').value;
+            if (token === 'resellersampfajar') {
+                window.location.href = 'admin.html';
             } else {
-                alert("Token salah!");
-            }
-        }
-
-        // Fungsi untuk toggle menu
-        function toggleMenu() {
-            const menu = document.getElementById("menu");
-            menu.style.display = menu.style.display === "block" ? "none" : "block";
-        }
-
-        // Fungsi untuk menampilkan admin panel
-        function showAdminPanel() {
-            const email = prompt("Masukkan Email Admin:");
-            const password = prompt("Masukkan Password Admin:");
-            if (email === "fajarstore709@gmail.com" && password === "fajarstore709") {
-                alert("Login berhasil! Admin Panel terbuka.");
-                let domain = prompt("Masukkan Domain:");
-                let ptla = prompt("Masukkan PTLA:");
-                let ptlc = prompt("Masukkan PTLC:");
-                let eggid = prompt("Masukkan EggID:");
-                alert(`Data Disimpan: Domain: ${domain}, PTLA: ${ptla}, PTLC: ${ptlc}, EggID: ${eggid}`);
-            } else {
-                alert("Email atau Password salah.");
+                alert('Token Salah!');
             }
         }
     </script>
-
 </body>
 </html>
 EOF
 
-# Memberikan izin untuk file index.html
-chmod 755 /var/www/html/samp_website/index.html
+# Menyusun file untuk halaman admin
+echo "Membuat halaman Admin..."
+cat <<EOF > $WEB_DIR/admin.html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .input {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Login Admin</h2>
+    <input type="text" class="input" id="admin-email" placeholder="Email" />
+    <input type="password" class="input" id="admin-password" placeholder="Password" />
+    <button class="btn" onclick="loginAdmin()">Login</button>
 
-# Menampilkan informasi instalasi selesai
-echo "Website telah diinstall di /var/www/html/samp_website/"
-echo "Domain yang Anda masukkan: $domain"
+    <script>
+        function loginAdmin() {
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+
+            if (email === 'fajarstore709@gmail.com' && password === 'fajarstore709') {
+                alert('Login berhasil!');
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                alert('Email atau password salah!');
+            }
+        }
+    </script>
+</body>
+</html>
+EOF
+
+# Mengatur konfigurasi Nginx untuk situs ini
+echo "Mengonfigurasi Nginx..."
+sudo cat <<EOF > /etc/nginx/sites-available/samp_website
+server {
+    listen 80;
+    server_name $DOMAIN;
+
+    root $WEB_DIR;
+    index index.html;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
+EOF
+
+# Mengaktifkan situs Nginx
+sudo ln -s /etc/nginx/sites-available/samp_website /etc/nginx/sites-enabled/
+sudo systemctl restart nginx
+
+# Menampilkan pesan sukses
+echo "Website berhasil diinstal dan dapat diakses di $DOMAIN"
+echo "Situs aktif, Anda bisa mengaksesnya di http://$DOMAIN"
+
