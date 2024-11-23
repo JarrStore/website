@@ -25,9 +25,41 @@ echo "<body><div class='running-text'>Welcome Website Reseller Samp By Fajar Off
 echo "<input type='text' class='token-input' id='token' placeholder='Masukkan Token' />";
 echo "<button class='btn-login' onclick='checkToken()'>Login</button><br><br>";
 echo "<button class='admin-button' onclick='location.href=\"admin.php\"'>Halaman Admin</button>";
-echo "<script>function checkToken(){const token=document.getElementById('token').value;if(token==='resellersampfajar'){window.location.href='admin.php';}else{alert('Token Salah!');}}</script></body></html>";
+echo "<script>function checkToken(){const token=document.getElementById('token').value;if(token==='fajarsamp'){window.location.href='login.php';}else{alert('Token Salah!');}}</script></body></html>";
 ?>
+EOF
 
+# Menyiapkan file halaman login
+echo "Membuat halaman Login..."
+cat <<EOF > $WEB_DIR/login.php
+<?php
+echo "<html lang='id'>";
+echo "<head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'>";
+echo "<title>Login Pterodactyl</title><style>body{font-family:Arial,sans-serif;text-align:center;padding-top:50px;}.input{margin:10px;padding:10px;font-size:16px;}.btn{padding:10px 20px;background-color:#007bff;color:white;border:none;cursor:pointer;}</style></head>";
+echo "<body><h2>Login Pterodactyl</h2>";
+echo "<input type='text' class='input' id='username' placeholder='Username' />";
+echo "<input type='password' class='input' id='password' placeholder='Password' />";
+echo "<button class='btn' onclick='loginPterodactyl()'>Login</button>";
+echo "<script>function loginPterodactyl(){const username=document.getElementById('username').value;const password=document.getElementById('password').value;if(username==='pterodactyl_user'&&password==='pterodactyl_pass'){window.location.href='dashboard.php';}else{alert('Username atau password salah!');}}</script>";
+echo "</body></html>";
+?>
+EOF
+
+# Menyiapkan file halaman dashboard
+echo "Membuat halaman Dashboard..."
+cat <<EOF > $WEB_DIR/dashboard.php
+<?php
+echo "<html lang='id'>";
+echo "<head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'>";
+echo "<title>Dashboard Reseller Samp</title><style>body{font-family:Arial,sans-serif;text-align:center;padding-top:50px;background-color:#f8f9fa;}.btn{padding:10px 20px;background-color:#28a745;color:white;border:none;cursor:pointer;}</style></head>";
+echo "<body><h2>RESELLER SAMP BY FAJAR OFFICIAL</h2><p>Silakan tekan tombol di bawah ini:</p>";
+echo "<button class='btn' onclick='window.location.href=\"create_samp.php\"'>TOMBOL CREATE SAMP</button><br><br>";
+echo "<button class='btn' onclick='window.location.href=\"create_panel.php\"'>TOMBOL CREATE PANEL</button><br><br>";
+echo "<button class='btn' onclick='window.location.href=\"https://wa.me/+6283157602477\"'>WhatsApp Support</button><br><br>";
+echo "<button class='btn' onclick='window.location.href=\"https://mail.google.com/mail/?view=cm&fs=1&to=fajarstore709@gmail.com\"'>Email Support</button><br><br>";
+echo "<button class='btn' onclick='window.location.href=\"admin.php\"'>Halaman Admin</button>";
+echo "</body></html>";
+?>
 EOF
 
 # Menyiapkan file halaman admin
@@ -41,10 +73,9 @@ echo "<body><h2>Login Admin</h2>";
 echo "<input type='text' class='input' id='admin-email' placeholder='Email' />";
 echo "<input type='password' class='input' id='admin-password' placeholder='Password' />";
 echo "<button class='btn' onclick='loginAdmin()'>Login</button>";
-echo "<script>function loginAdmin(){const email=document.getElementById('admin-email').value;const password=document.getElementById('admin-password').value;if(email==='fajarstore709@gmail.com'&&password==='fajarstore709'){alert('Login berhasil!');window.location.href='admin-dashboard.php';}else{alert('Email atau password salah!');}}</script>";
+echo "<script>function loginAdmin(){const email=document.getElementById('admin-email').value;const password=document.getElementById('admin-password').value;if(email==='fajarstore709@gmail.com'&&password==='fajarstore709'){window.location.href='admin-dashboard.php';}else{alert('Email atau password salah!');}}</script>";
 echo "</body></html>";
 ?>
-
 EOF
 
 # Mengonfigurasi Nginx untuk domain ini
@@ -80,4 +111,3 @@ sudo certbot --nginx -d $DOMAIN --non-interactive --agree-tos --email fajarstore
 
 # Menampilkan pesan sukses
 echo "Website berhasil diinstal dan dapat diakses di https://$DOMAIN"
-
