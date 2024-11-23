@@ -1,26 +1,12 @@
 #!/bin/bash
 
-# Meminta input untuk kredensial database
-echo "Masukkan nama host database (contoh: localhost):"
-read db_host
+# Koneksi ke database admin
+DB_HOST="178.128.17.191"
+DB_USERNAME="u5_FBmTrzUtQS"
+DB_PASSWORD="ux+exilNb^sfk066PX!6kNkS"
+DB_NAME="s5_admin"
 
-echo "Masukkan username database:"
-read db_user
-
-echo "Masukkan password database:"
-read -s db_pass
-
-echo "Masukkan nama database:"
-read db_name
-
-# Menghubungkan ke database untuk memastikan kredensial benar
-mysql -h "$db_host" -u "$db_user" -p"$db_pass" -e "USE $db_name;" > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-    echo "Tidak dapat menghubungkan ke database. Periksa kredensial Anda."
-    exit 1
-fi
-
-# Meminta input domain
+# Meminta input domain dari user
 echo "Masukkan domain website (contoh: example.com):"
 read domain
 
