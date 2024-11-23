@@ -1,11 +1,24 @@
 #!/bin/bash
 
-# Menghapus website dan file terkait
-echo "Menghapus website dari /var/www/html/samp_website..."
-rm -rf /var/www/html/samp_website
+# Meminta domain dari pengguna
+echo "Masukkan domain yang ingin dihapus:"
+read DOMAIN
 
-# Menghapus file database admin.sql
-echo "Menghapus file database admin.sql..."
-rm -f /var/www/html/samp_website/admin.sql
+# Menghapus file website
+WEB_DIR="/var/www/html/samp_website"
+echo "Menghapus direktori website..."
+sudo rm -rf $WEB_DIR
 
-echo "Website dan database telah dihapus."
+# Menghapus konfigurasi Nginx
+echo "Menghapus konfigurasi Nginx..."
+sudo rm /etc/nginx/sites-available/samp_website
+sudo rm /etc/nginx/sites-enabled/samp_website
+sudo systemctl restart nginx
+
+# Menghapus SSL
+echo "Menghapus sertifikat SSL..."
+sudo certbot revoke --cert-path /etc/letsencrypt/live/$DOMAIN/fullchain.pem
+sudo certbot delete --cert-name $DOMAIN
+
+# Menampilkan pesan sukses
+echo "Website dan konfigurasi SSL berhasil dihapus."
