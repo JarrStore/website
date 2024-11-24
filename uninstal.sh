@@ -1,24 +1,30 @@
 #!/bin/bash
 
-# Meminta domain dari pengguna
-echo "Masukkan domain yang ingin dihapus:"
-read DOMAIN
+# Memastikan script dijalankan dengan hak akses root
+if [ "$(id -u)" -ne 0 ]; then
+  echo "Harap jalankan skrip ini sebagai root!"
+  exit 1
+fi
 
-# Menghapus file website
-WEB_DIR="/var/www/html/samp_website"
-echo "Menghapus direktori website..."
-sudo rm -rf $WEB_DIR
+# Meminta input domain dari pengguna
+read -p "Masukkan nama domain yang akan dihapus (contoh: example.com): " domain
 
 # Menghapus konfigurasi Nginx
-echo "Menghapus konfigurasi Nginx..."
-sudo rm /etc/nginx/sites-available/samp_website
-sudo rm /etc/nginx/sites-enabled/samp_website
-sudo systemctl restart nginx
+echo "Menghapus konfigurasi Nginx untuk domain $domain..."
+rm -f /etc/nginx/sites-available/$domain
+rm -f /etc/nginx/sites-enabled/$domain
 
-# Menghapus SSL
-echo "Menghapus sertifikat SSL..."
-sudo certbot revoke --cert-path /etc/letsencrypt/live/$DOMAIN/fullchain.pem
-sudo certbot delete --cert-name $DOMAIN
+# Menghapus file website
+echo "Menghapus file website di /var/www/$domain..."
+rm -rf /var/www/$domain
 
-# Menampilkan pesan sukses
-echo "Website dan konfigurasi SSL berhasil dihapus."
+# Memuat ulang Nginx
+echo "Memuat ulang Nginx..."
+nginx -t
+if [ $? -eq 0 ]; then
+  systemctl reload nginx
+  echo "Website untuk $domain berhasil dihapus."
+else
+  echo "Ada masalah saat memuat ulang Nginx. Periksa konfigurasi Nginx."
+  exit 1
+fi
